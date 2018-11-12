@@ -1,0 +1,23 @@
+plugins {
+ id 'java'
+}
+
+group 'io.github.matthewacon'
+version '0.0.1'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+ main {
+  java.srcDirs = ['src/java/cgol/src']
+  resources.srcDirs = ['src/java/cgol/res']
+ }
+}
+
+repositories {
+ mavenCentral()
+}
+
+dependencies {
+ compile group: 'org.processing', name: 'core', version: '3.3.7'
+}
