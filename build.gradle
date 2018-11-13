@@ -21,3 +21,20 @@ repositories {
 dependencies {
  compile group: 'org.processing', name: 'core', version: '3.3.7'
 }
+
+jar {
+ from {
+  configurations.compile.collect {
+   it.isDirectory() ? it : zipTree(it)
+  }
+ }
+ from sourceSets.main.output
+ manifest.attributes('Main-Class' : 'io.github.matthewacon.cgol.Main')
+}
+
+task run(type: JavaExec) {
+ standardOutput = System.out
+ errorOutput = System.err
+ classpath = files(jar.outputs.files.getAt(0))
+ main = 'io.github.matthewacon.cgol.Main'
+}
