@@ -1,5 +1,6 @@
 # CGoL
 A simple implementation of **C**onway's **G**ame **o**f **L**ife, using the [Processing library](https://processing.org/)
+![Demo](https://github.com/Matthewacon/CGoL/blob/master/cgol-demo.gif)
 
 ## Pronounciation
 #### "Seagull" `/ˈsiːˌɡʌl/`
