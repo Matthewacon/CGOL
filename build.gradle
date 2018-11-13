@@ -32,7 +32,7 @@ jar {
  manifest.attributes('Main-Class' : 'io.github.matthewacon.cgol.Main')
 }
 
-task run(type: JavaExec) {
+task run(type: JavaExec, dependsOn: jar) {
  standardOutput = System.out
  errorOutput = System.err
  classpath = files(jar.outputs.files.getAt(0))
