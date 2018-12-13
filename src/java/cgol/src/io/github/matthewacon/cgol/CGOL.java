@@ -54,59 +54,6 @@ public final class CGOL {
  }
 
  public Boolean[][] step(final StepFunction... sfs) {
-////  final Boolean[][] future = Arrays.copyOf(board, board.length);
-////  final Boolean[][] future = new Boolean[board.length][board[0].length];
-//  for (int i = 0; i < board.length; i++) {
-//   for (int j = 0; j < board[i].length; j++) {
-//    //Count neighbours
-//    int neighbours = 0;
-//    for (int l = -1; l < 2; l++) {
-//     for (int m = -1; m < 2; m++) {
-////      if (!(l == i && m == j)) {
-////      if (l != 0 && m != 0) {
-//       final SimpleEntry<Integer, Integer> indices = wrap(i + l, j + m);
-//       if (board[indices.getKey()][indices.getValue()]) {
-//        neighbours++;
-////       }
-//      }
-//     }
-//    }
-//    if (board[i][j]) {
-//     neighbours -= 1;
-//    }
-//    changes.put(new SimpleEntry<>(i, j), rules.step(i, j, neighbours, board[i][j]));
-//
-////////    if (neighbours <= 2 || neighbours > 3) {
-//////    if (neighbours < 2 || neighbours > 3) {
-////////     future[i][j] = false;
-//////     changes.put(new SimpleEntry<>(i, j), true);
-//////    } else {
-////////     future[i][j] = true;
-//////     changes.put(new SimpleEntry<>(i, j), false);
-//////    }
-////
-//////    if (neighbours == 2 || neighbours == 3) {
-//////     future[i][j] = true;
-//////    } else {
-//////     future[i][j] = false;
-//////    }
-////
-////    if (neighbours == 2) {
-////     changes.put(new SimpleEntry<>(i, j), board[i][j]);
-//////     future[i][j] = board[i][j];
-////    } else if (neighbours == 3) {
-////     changes.put(new SimpleEntry<>(i, j), true);
-//////     future[i][j] = true;
-////    } else {
-////     changes.put(new SimpleEntry<>(i, j), false);
-//////     future[i][j] = false;
-////    }
-//   }
-//  }
-//  for (final SimpleEntry<Integer, Integer> change : changes.keySet()) {
-//   board[change.getKey()][change.getValue()] = changes.get(change);
-//  }
-//  changes.clear();
   for (final StepFunction sf : sfs) {
    sf.step(this);
   }

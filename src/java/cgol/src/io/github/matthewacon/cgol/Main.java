@@ -10,8 +10,9 @@ public class Main extends PApplet {
   PApplet.main(Main.class.getCanonicalName());
  }
 
- public static final CGOL.StepFunction
-  CONWAY = cgol -> {
+ public static final CGOL.StepFunction[] FUNCTIONS = new CGOL.StepFunction[] {
+  //Conway
+  cgol -> {
    final Boolean[][] board = cgol.peek();
    final LinkedHashMap<SimpleEntry<Integer, Integer>, Boolean> changes = new LinkedHashMap<>();
    for (int i = 0; i < board.length; i++) {
@@ -42,7 +43,8 @@ public class Main extends PApplet {
     board[change.getKey()][change.getValue()] = changes.get(change);
    }
   },
-  ANTI_CONWAY = cgol -> {
+  //Anti-Conway
+  cgol -> {
    final Boolean[][] board = cgol.peek();
    for (int i = 0; i < board.length; i++) {
     for (int j = 0; j < board[i].length; j++) {
@@ -50,11 +52,11 @@ public class Main extends PApplet {
      int neighbours = 0;
      for (int l = -1; l < 2; l++) {
       for (int m = -1; m < 2; m++) {
-      if (!(l == i && m == j)) {
-       final SimpleEntry<Integer, Integer> indices = cgol.wrap(i + l, j + m);
-       if (board[indices.getKey()][indices.getValue()]) {
-        neighbours++;
-       }
+       if (!(l == i && m == j)) {
+        final SimpleEntry<Integer, Integer> indices = cgol.wrap(i + l, j + m);
+        if (board[indices.getKey()][indices.getValue()]) {
+         neighbours++;
+        }
        }
       }
      }
@@ -67,7 +69,69 @@ public class Main extends PApplet {
      }
     }
    }
-  };
+  },
+  //Ulam-Wurburton
+  cgol -> {
+   final Boolean[][] board = cgol.peek();
+   final LinkedHashMap<SimpleEntry<Integer, Integer>, Boolean> changes = new LinkedHashMap<>();
+   for (int i = 0; i < board.length; i++) {
+    for (int j = 0; j < board[i].length; j++) {
+     if (board[i][j]) {
+      continue;
+     }
+     int neighbours = 0;
+     for (int k = -1; k < 2; k++) {
+      if (k == 0) {
+       continue;
+      }
+      final SimpleEntry<Integer, Integer>
+       vert_indices = cgol.wrap(i + k, j),
+       hor_indices = cgol.wrap(i, j + k);
+      if (board[vert_indices.getKey()][vert_indices.getValue()]) {
+       neighbours++;
+      }
+      if (board[hor_indices.getKey()][hor_indices.getValue()]) {
+       neighbours++;
+      }
+     }
+     if (neighbours == 1) {
+      changes.put(new SimpleEntry<>(i, j), true);
+     }
+    }
+   }
+   for (final SimpleEntry<Integer, Integer> change : changes.keySet()) {
+    board[change.getKey()][change.getValue()] = changes.get(change);
+   }
+  },
+  //Anti-Ulam-Wurburton
+  cgol -> {
+   final Boolean[][] board = cgol.peek();
+   final LinkedHashMap<SimpleEntry<Integer, Integer>, Boolean> changes = new LinkedHashMap<>();
+   for (int i = 0; i < board.length; i++) {
+    for (int j = 0; j < board[i].length; j++) {
+     int neighbours = 0;
+     for (int k = -1; k < 2; k++) {
+      if (k == 0) {
+       continue;
+      }
+      final SimpleEntry<Integer, Integer>
+       vert_indices = cgol.wrap(i + k, j),
+       hor_indices = cgol.wrap(i, j + k);
+      if (board[vert_indices.getKey()][vert_indices.getValue()]) {
+       neighbours++;
+      }
+      if (board[hor_indices.getKey()][hor_indices.getValue()]) {
+       neighbours++;
+      }
+     }
+     changes.put(new SimpleEntry<>(i, j), neighbours == 1);
+    }
+   }
+   for (final SimpleEntry<Integer, Integer> change : changes.keySet()) {
+    board[change.getKey()][change.getValue()] = changes.get(change);
+   }
+  }
+ };
 
  private int
   boardWidth = 100,
@@ -80,12 +144,13 @@ public class Main extends PApplet {
  private boolean
   mouseHeld = false,
   shouldUpdate = false,
-  enableGrid = false,
-  strangeRules = false;
+  enableGrid = false;
 
  private long
   lastStep = 0,
   updateDelay = 100;
+
+ private int function_index = 0;
 
  public void settings() {
   size(1000, 1000, "processing.awt.PGraphicsJava2D");
@@ -133,7 +198,7 @@ public class Main extends PApplet {
    }
   }
   if (shouldUpdate && (System.currentTimeMillis() - lastStep) > updateDelay) {
-   cgol.step(strangeRules ? ANTI_CONWAY : CONWAY);
+   cgol.step(FUNCTIONS[function_index]);
    lastStep = System.currentTimeMillis();
   }
  }
@@ -155,7 +220,7 @@ public class Main extends PApplet {
    } else if (key == 'g') {
     enableGrid = !enableGrid;
    } else if (key == 'm') {
-    strangeRules = !strangeRules;
+    function_index = (function_index + 1 < FUNCTIONS.length ? function_index + 1 : 0);
    }
   }
  }
