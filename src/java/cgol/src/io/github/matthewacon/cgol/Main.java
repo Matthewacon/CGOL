@@ -70,7 +70,7 @@ public class Main extends PApplet {
     }
    }
   },
-  //Ulam-Wurburton
+  //Ulam-Warburton
   cgol -> {
    final Boolean[][] board = cgol.peek();
    final LinkedHashMap<SimpleEntry<Integer, Integer>, Boolean> changes = new LinkedHashMap<>();
@@ -103,7 +103,7 @@ public class Main extends PApplet {
     board[change.getKey()][change.getValue()] = changes.get(change);
    }
   },
-  //Anti-Ulam-Wurburton
+  //Anti-Ulam-Warburton
   cgol -> {
    final Boolean[][] board = cgol.peek();
    final LinkedHashMap<SimpleEntry<Integer, Integer>, Boolean> changes = new LinkedHashMap<>();
