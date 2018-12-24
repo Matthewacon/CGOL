@@ -134,8 +134,8 @@ public class Main extends PApplet {
  };
 
  private int
-  boardWidth = 100,
-  boardHeight = 100,
+  boardWidth = 125,
+  boardHeight = 125,
   cellWidth,
   cellHeight;
 
@@ -185,18 +185,18 @@ public class Main extends PApplet {
    }
   }
   //Draw cells
+  pushMatrix();
   for (int i = 0; i < boardWidth; i++) {
    for (int j = 0; j < boardHeight; j++) {
-    pushMatrix();
     if (cgol.peek()[i][j]) {
      fill(255);
     } else {
      fill(0);
     }
     rect(i * cellWidth, j * cellHeight, cellWidth, cellHeight);
-    popMatrix();
    }
   }
+  popMatrix();
   if (shouldUpdate && (System.currentTimeMillis() - lastStep) > updateDelay) {
    cgol.step(FUNCTIONS[function_index]);
    lastStep = System.currentTimeMillis();

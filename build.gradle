@@ -5,7 +5,9 @@ plugins {
 group 'io.github.matthewacon'
 version '0.0.1'
 
-sourceCompatibility = 1.8
+final String MAIN_CLASS = 'io.github.matthewacon.cgol.Main';
+
+sourceCompatibility = targetCompatibility = 1.8
 
 sourceSets {
  main {
@@ -29,12 +31,12 @@ jar {
   }
  }
  from sourceSets.main.output
- manifest.attributes('Main-Class' : 'io.github.matthewacon.cgol.Main')
+ manifest.attributes('Main-Class' : MAIN_CLASS)
 }
 
 task run(type: JavaExec, dependsOn: jar) {
  standardOutput = System.out
  errorOutput = System.err
  classpath = files(jar.outputs.files.getAt(0))
- main = 'io.github.matthewacon.cgol.Main'
+ main = MAIN_CLASS
 }
